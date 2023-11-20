@@ -131,11 +131,13 @@
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="IIteratable.cpp" />
     <ClCompile Include="IIterator.cpp" />
+    <ClCompile Include="Set.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
     <ClInclude Include="IIterable.h" />
     <ClInclude Include="IIterator.h" />
+    <ClInclude Include="Set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
