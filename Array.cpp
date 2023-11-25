@@ -75,7 +75,7 @@ IIterator* Array::at(int index_)
 void Array::remove(IIterator* element)
 {
 	for (IIterator* i = begin(); !i->isEqual(end()); i->next())
-		if (i == element)
+		if (i->isEqual(element))
 		{
 
 			break;
@@ -90,9 +90,26 @@ void Array::remove(IIterator* element)
 	size = 0;
 }
 
-void Array::join(IIterable* container)
+/*OK*/void Array::join(IIterable* container)
 {
+	int newSize = size + container->getSize();
+	double* newArr = new double[newSize];
 
+	for (int i = 0; i < size; i++)
+		newArr[i] = arr[i];
+
+	IIterator* iter = container->begin();
+	int index = size;
+	while (!iter->isEqual(container->end()))
+	{
+		newArr[index] = *(double*)iter->get();
+		iter->next();
+		index++;
+	}
+
+	delete[] arr;
+	arr = newArr;
+	size = newSize;
 }
 
 /*OK*/double& Array::operator[](int index_)

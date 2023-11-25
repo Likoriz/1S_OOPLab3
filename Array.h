@@ -6,7 +6,6 @@ class Array: public IIterable
 private:
 	double* arr;
 	int size;
-	//int index;
 public:
 	Array();
 	~Array();
