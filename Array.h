@@ -4,13 +4,17 @@
 class Array: public IIterable
 {
 private:
-	double* arr = nullptr;
+	double* arr;
 	int size;
-	int index;
+	//int index;
 public:
-	Array(int size_);
+	Array();
 	~Array();
-	IIterable* append(IIterable* objects);
+	double* get();
+	//Добавляет элементы в конец массива, увеличивая его размер
+	void push(double val);
+	//Удаляет элементы с конца массива
+	void pop();
 	//Возвращает начальный контейнер
 	IIterator* begin();
 	//Возвращает конечный контейнер
@@ -20,18 +24,14 @@ public:
 	//Проверяет объекты на наличие
 	bool isEmpty();
 	//Получает контейнер по индексу
-	double getByIndex(int index_);
-	//Возвращает данные этого итератора
-	double get();
-	//Переходит на следующий элемент
-	void next();
-	//Переходит на предыдущий элемент
-	void prev();
-	//Сравнивает данные двух итераторов
-	bool operator==(IIterator* object);
-	//Сравнивает данные двух итераторов
-	bool operator!=(IIterator* object);
-
-	IIterator* getIT();
+	IIterator* at(int index_);
+	//Удаляет элемент из контейнера
+	void remove(IIterator* element);
+	//Очищает содержимое контейнера
+	void clear();
+	//Копирует и добавляет к себе все данные из другого контейнера
+	void join(IIterable* container);
+	//Оператор обращения к элементу массива
+	double& operator[](int index_);
 };
 

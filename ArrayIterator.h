@@ -1,15 +1,21 @@
 #pragma once
+#include "Array.h"
+#include "IIterator.h"
 
-class IIterator
+class ArrayIterator: public IIterator
 {
+private:
+	Array* ptr;
+	int index;
 public:
+	ArrayIterator(Array* arr, int index);
 	//Переходит на следующий элемент
-	virtual void next() = 0;
+	void next();
 	//Переходит на предыдущий элемент
-	virtual void prev() = 0;
+	void prev();
 	//Возвращает данные этого итератора
-	virtual void* get() = 0;
+	void* get();
 	//Сравнивает данные двух итераторов, указывают ли они на один и тот же элемент в одном и том же контейнере
-	virtual bool isEqual(IIterator* iter) = 0;
+	bool isEqual(IIterator* iter);
 };
 

@@ -1,109 +1,101 @@
 #include "Array.h"
+#include "ArrayIterator.h"
 using namespace std;
 
-Array::Array(int size_)
+/*OK*/Array::Array()
 {
-	size = size_;
-	arr = new double[size];
-	index = 0;
-
-	for (int i = 0; i < size; i++)
-	{
-		double element = rand() % 100 / 10;
-		if (rand() % 2)
-			element *= -1;
-		element += element / 10;
-
-		arr[i] = element;
-	}
+	size = 0;
+	arr = nullptr;
 }
 
-Array::~Array()
+/*OK*/Array::~Array()
 {
 	delete[] arr;
 	arr = nullptr;
 }
 
-IIterable* Array::append(IIterable* objects)
+/*OK*/double* Array::get()
 {
-	int newSize = size + 1;
-	IIterable* newArr = new Array(newSize);
+	return arr;
+}
+
+/*OK*/void Array::push(double val)
+{
+	double* newArr = new double[size + 1];
 
 	for (int i = 0; i < size; i++)
-		newArr[i] = objects[i];
+		newArr[i] = arr[i];
+	newArr[size] = val;
 
-	size = newSize;
-
-	delete[] objects;
-
-	return newArr;
+	delete[] arr;
+	arr = newArr;
+	size++;
 }
 
-IIterator* Array::begin()
+/*OK*/void Array::pop()
 {
-	return this;
+	double* newArr = new double[size - 1];
+
+	for (int i = 0; i < size - 1; i++)
+		newArr[i] = arr[i];
+
+	delete[] arr;
+	arr = newArr;
+	size--;
 }
 
-IIterator* Array::end()//////////////////////////////////
+/*OK*/IIterator* Array::begin()
 {
-	return this + size - 1;
+	return new ArrayIterator(this, 0);
 }
 
-IIterator* Array::getIT()
+/*OK*/IIterator* Array::end()
 {
-	return this + index;
+	return new ArrayIterator(this, size);
 }
 
-int Array::getSize()
+/*OK*/int Array::getSize()
 {
 	return size;
 }
 
-bool Array::isEmpty()
+/*OK*/bool Array::isEmpty()
 {
-	if (arr == nullptr)
-		return true;
-	else
-		return false;
+	return arr == nullptr;
 }
 
-double Array::getByIndex(int index_)
+IIterator* Array::at(int index_)
 {
 	if (index_ >= 0 && index_ < size)
-		return arr[index_];
+		return 0;//arr[index_];
 	else
-		return 1e300;
+		return 0;//1e300;
 }
 
-double Array::get()
+void Array::remove(IIterator* element)
 {
-	return arr[index];
+	for (IIterator* i = begin(); !i->isEqual(end()); i->next())
+		if (i == element)
+		{
+
+			break;
+		}
 }
 
-void Array::next()///////////////////////////////////////////////////////
+/*OK*/void Array::clear()
 {
-	if (index < size - 1)
-		index++;
+	delete[] arr;
+	arr = nullptr;
+
+	size = 0;
 }
 
-void Array::prev()/////////////////////////////////////////////////
+void Array::join(IIterable* container)
 {
-	if (index > 0)
-		index--;
+
 }
 
-bool Array::operator==(IIterator* object)////////////////////////////////////////////////
+/*OK*/double& Array::operator[](int index_)
 {
-	if (get() == object->get())
-		return true;
-	else
-		return false;
-}
-
-bool Array::operator!=(IIterator* object)////////////////////////////////////////////////
-{
-	if (get() != object->get())
-		return false;
-	else
-		return true;
+	return arr[index_];
 }
