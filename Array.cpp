@@ -64,22 +64,33 @@ using namespace std;
 	return arr == nullptr;
 }
 
-IIterator* Array::at(int index_)
+/*OK*/IIterator* Array::at(int index_)
 {
-	if (index_ >= 0 && index_ < size)
-		return 0;//arr[index_];
-	else
-		return 0;//1e300;
+	if (index_ < 0 || index_ >= size)
+		return nullptr;
+
+	return new ArrayIterator(this, index_);
 }
 
 void Array::remove(IIterator* element)
 {
-	for (IIterator* i = begin(); !i->isEqual(end()); i->next())
-		if (i->isEqual(element))
-		{
+	ArrayIterator* iter = (ArrayIterator*)element;
+	int index = iter->getIndex();
 
-			break;
-		}
+	if (index < 0 || index >= size)
+		return;
+
+	double* newArr = new double[size - 1];
+
+	for (int i = 0; i < index; i++)
+		newArr[i] = arr[i];
+
+	for (int i = index + 1; i < size; i++)
+		newArr[i - 1] = arr[i];
+
+	delete[] arr;
+	arr = newArr;
+	size--;
 }
 
 /*OK*/void Array::clear()

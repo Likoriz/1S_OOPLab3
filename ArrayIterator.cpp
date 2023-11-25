@@ -24,5 +24,6 @@ void* ArrayIterator::get()
 bool ArrayIterator::isEqual(IIterator* iter)
 {
 	ArrayIterator* newArr = (ArrayIterator*)iter;
+
 	return (ptr == newArr->ptr && index == newArr->index);
 }

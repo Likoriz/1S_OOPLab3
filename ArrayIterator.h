@@ -9,6 +9,10 @@ private:
 	int index;
 public:
 	ArrayIterator(Array* arr, int index);
+	int getIndex()
+	{
+		return index;
+	}
 	//Переходит на следующий элемент
 	void next();
 	//Переходит на предыдущий элемент
