@@ -61,7 +61,7 @@ using namespace std;
 
 /*OK*/bool Array::isEmpty()
 {
-	return arr == nullptr;
+	return size == 0;
 }
 
 /*OK*/IIterator* Array::at(int index_)
@@ -72,7 +72,7 @@ using namespace std;
 	return new ArrayIterator(this, index_);
 }
 
-void Array::remove(IIterator* element)
+/*OK*/void Array::remove(IIterator* element)
 {
 	ArrayIterator* iter = (ArrayIterator*)element;
 	int index = iter->getIndex();
