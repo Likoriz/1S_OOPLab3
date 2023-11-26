@@ -1,120 +1,141 @@
-//#include "Set.h"
-//Set::Set(int size_)
-//{
-//	size=size_;
-//	arr=new double[size];
-//	index=0;
-//
-//	for(int i=0; i<size; i++)
-//	{
-//		double element=rand()%100/10;
-//		bool num_dont_exist=1;
-//		if(rand()%2)
-//			element*=-1;
-//		element+=element/10;
-//		for(int j=0;j<=i;j++)
-//		{
-//			if (arr[j]==element);
-//			{
-//				num_dont_exist=0;
-//				break;
-//			}
-//		}
-//		if(num_dont_exist)
-//		{
-//			arr[i]=element;
-//		}
-//		else
-//			i--;
-//	}
-//}
-//
-//Set::~Set()
-//{
-//	delete[] arr;
-//	arr=nullptr;
-//}
-//
-//IIterable* Set::append(IIterable* objects)
-//{
-//	int newSize=size+1;
-//	IIterable* newArr=new Set(newSize);
-//
-//	for(int i=0; i<size; i++)
-//		newArr[i]=objects[i];
-//
-//	size=newSize;
-//
-//	delete[] objects;
-//
-//	return newArr;
-//}
-//
-//IIterator* Set::begin()
-//{
-//	return this;
-//}
-//
-//IIterator* Set::end()//////////////////////////////////
-//{
-//	return this+size-1;
-//}
-//
-//IIterator* Set::getIT()
-//{
-//	return this+index;
-//}
-//
-//int Set::getSize()
-//{
-//	return size;
-//}
-//
-//bool Set::isEmpty()
-//{
-//	if(arr==nullptr)
-//		return true;
-//	else
-//		return false;
-//}
-//
-//double Set::getByIndex(int index_)
-//{
-//	if(index_>=0&&index_<size)
-//		return arr[index_];
-//	else
-//		return 1e300;
-//}
-//
-//double Set::get()
-//{
-//	return arr[index];
-//}
-//
-//void Set::next()///////////////////////////////////////////////////////
-//{
-//	if(index<size-1)
-//		index++;
-//}
-//
-//void Set::prev()/////////////////////////////////////////////////
-//{
-//	if(index>0)
-//		index--;
-//}
-//
-//bool Set::operator==(IIterator* object)////////////////////////////////////////////////
-//{
-//	if(get()==object->get())
-//		return true;
-//	else
-//		return false;
-//}
-//
-//bool Set::operator!=(IIterator* object)////////////////////////////////////////////////
-//{
-//	if(get()!=object->get())
-//		return false;
-//	else
-//		return true;
-//}
+#include "Set.h"
+#include "ArrayIterator.h"
+using namespace std;
+
+/*OK*/Set::Set()
+{
+	size=0;
+	arr=nullptr;
+}
+
+/*OK*/Set::~Set()
+{
+	delete[] arr;
+	arr=nullptr;
+}
+
+/*OK*/double* Set::get()
+{
+	return arr;
+}
+
+/*OK*/void Set::push(double val)
+{
+	bool num_dont_exist=true;
+	for(int i=0; i<size; i++)
+	{
+		if (arr[i]==val)
+		{
+			num_dont_exist=false;
+			break;
+		}
+	}
+	if(num_dont_exist)
+	{
+		double* newArr=new double[size+1];
+
+		for(int i=0; i<size; i++)
+			newArr[i]=arr[i];
+		newArr[size]=val;
+
+		delete[] arr;
+		arr=newArr;
+		size++;
+	}
+}
+
+/*OK*/void Set::pop()
+{
+	double* newArr=new double[size-1];
+
+	for(int i=0; i<size-1; i++)
+		newArr[i]=arr[i];
+
+	delete[] arr;
+	arr=newArr;
+	size--;
+}
+
+/*OK*/IIterator* Set::begin()
+{
+	return new ArrayIterator((Array*)this, 0);
+}
+
+/*OK*/IIterator* Set::end()
+{
+	return new ArrayIterator((Array*)this, size);
+}
+
+/*OK*/int Set::getSize()
+{
+	return size;
+}
+
+/*OK*/bool Set::isEmpty()
+{
+	return size==0;
+}
+
+/*OK*/IIterator* Set::at(int index_)
+{
+	if(index_<0||index_>=size)
+		return nullptr;
+
+	return new ArrayIterator((Array*)this, index_);
+}
+
+/*OK*/void Set::remove(IIterator* element)
+{
+	ArrayIterator* iter=(ArrayIterator*)element;
+	int index=iter->getIndex();
+
+	if(index<0||index>=size)
+		return;
+
+	double* newArr=new double[size-1];
+
+	for(int i=0; i<index; i++)
+		newArr[i]=arr[i];
+
+	for(int i=index+1; i<size; i++)
+		newArr[i-1]=arr[i];
+
+	delete[] arr;
+	arr=newArr;
+	size--;
+}
+
+/*OK*/void Set::clear()
+{
+	delete[] arr;
+	arr=nullptr;
+
+	size=0;
+}
+
+/*OK*/void Set::join(IIterable* container)
+{
+	int newSize=size+container->getSize();
+	double* newArr=new double[newSize];
+
+	for(int i=0; i<size; i++)
+		newArr[i]=arr[i];
+
+	IIterator* iter=container->begin();
+	int index=size;
+	while(!iter->isEqual(container->end()))
+	{
+		newArr[index]=*(double*)iter->get();
+		iter->next();
+		index++;
+	}
+
+	delete[] arr;
+	arr=newArr;
+	size=newSize;
+}
+
+/*OK*/double& Set::operator[](int index_)
+{
+	return arr[index_];
+}
